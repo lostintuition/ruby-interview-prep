@@ -1,3 +1,5 @@
+require_relative "node"
+
 class RedBlackTree
 
   def put(key, value)
@@ -5,13 +7,29 @@ class RedBlackTree
     @root.color = :black
   end
 
+  def get(key)
+    get_helper(@root, key)
+  end
+
   private
+  def get_helper(node, key)
+    return nil if node.nil?
+
+    if key < node.key
+      return get_helper(node.left, key)
+    elsif key > node.key
+      return get_helper(node.right, key)
+    else
+      return node
+    end
+  end
+
   def put(node, key, value)
     return Node.new(key, value, :red) if node.nil?
 
     if key < node.key
       node.left = put(node.left, key, value)
-    else if key > node.key
+    elsif key > node.key
       node.right = put(node.right, key, value)
     else
       node.value = value
