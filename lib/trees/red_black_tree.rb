@@ -3,15 +3,27 @@ require_relative "node"
 class RedBlackTree
 
   def put(key, value)
-    @root = put(@root, key, value)
+    @root = put_helper(@root, key, value)
     @root.color = :black
   end
 
   def get(key)
-    get_helper(@root, key)
+    return get_helper(@root, key)
+  end
+
+  def preorder
+    preorder_helper(@root)
   end
 
   private
+  def preorder_helper(node)
+    return if node.nil?
+
+    preorder_helper(node.left)
+    puts "#{node.value}"
+    preorder_helper(node.right)
+  end
+
   def get_helper(node, key)
     return nil if node.nil?
 
@@ -20,17 +32,17 @@ class RedBlackTree
     elsif key > node.key
       return get_helper(node.right, key)
     else
-      return node
+      return node.value
     end
   end
 
-  def put(node, key, value)
+  def put_helper(node, key, value)
     return Node.new(key, value, :red) if node.nil?
 
     if key < node.key
-      node.left = put(node.left, key, value)
+      node.left = put_helper(node.left, key, value)
     elsif key > node.key
-      node.right = put(node.right, key, value)
+      node.right = put_helper(node.right, key, value)
     else
       node.value = value
     end
@@ -69,9 +81,16 @@ class RedBlackTree
     node.color = :red
     node.left.color = :black
     node.right.color = :black
+    return node
   end
 
   def isRed(node)
+    return false if node.nil?
     return node.color == :red
+  end
+
+  def size(node)
+    return 0 if node.nil?
+    return node.size
   end
 end
