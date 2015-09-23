@@ -12,16 +12,19 @@ class RedBlackTree
   end
 
   def preorder
-    preorder_helper(@root)
+    accumulator = []
+    preorder_helper(@root, accumulator)
+    return accumulator
   end
 
   private
-  def preorder_helper(node)
+  def preorder_helper(node, accumulator)
     return if node.nil?
 
-    preorder_helper(node.left)
-    puts "#{node.value}"
-    preorder_helper(node.right)
+    preorder_helper(node.left, accumulator)
+    accumulator << node.value
+    preorder_helper(node.right, accumulator)
+
   end
 
   def get_helper(node, key)

@@ -1,20 +1,28 @@
 require "trees/red_black_tree"
 
 describe RedBlackTree do
-  subject(:red_black_tree) { RedBlackTree.new }
 
   describe "#put" do
-    it "should put stuff in" do
-      red_black_tree.put(1, 1)
-      red_black_tree.put(2, 2)
-      red_black_tree.put(0, 0)
-      red_black_tree.put(4, 4)
+    context "when items are put in" do
+      subject(:red_black_tree) { RedBlackTree.new }
+      let(:key_to_value) { { 0 => 15, 1 => 27, 2 => 14, 4 => 32 } }
+      before do
+        key_to_value.each do |key, value|
+          red_black_tree.put(key, value)
+        end
+      end
 
-      puts "value: #{red_black_tree.get(1)}"
-      puts "value: #{red_black_tree.get(2)}"
-      puts "value: #{red_black_tree.get(0)}"
-      puts "value: #{red_black_tree.get(4)}"
-      puts red_black_tree.preorder
+      it "has a sorted preorder" do
+        sorted_keys = key_to_value.keys.sort
+        preorder = sorted_keys.collect { |key| key_to_value[key] }
+        expect(red_black_tree.preorder).to contain_exactly(*preorder)
+      end
+
+      it "contains the value for each key" do
+        key_to_value.keys.each do |key|
+          expect(red_black_tree.get(key)).to eq(key_to_value[key])
+        end
+      end
     end
   end
 end
