@@ -38,7 +38,7 @@ class AvlTree
     return node
   end
 
-  def getMinNode(node)
+  def get_min_node(node)
     current = node
     while (!current.left.nil?)
       current = current.left
@@ -62,7 +62,7 @@ class AvlTree
       if node.left.nil? || node.right.nil?
         node = node.left.nil? ? node.right : node.left
       else
-        min_node = getMinNode(node.right)
+        min_node = get_min_node(node.right)
         node.key = min_node.key
         node.value = min_node.value
         node.right = delete_node(node.right, min_node.key)
